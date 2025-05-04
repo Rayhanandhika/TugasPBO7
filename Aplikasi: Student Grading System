@@ -1,0 +1,103 @@
+import java.util.ArrayList;
+
+// Abstract Class (User)
+abstract class User {
+    private String id;
+    private String name;
+
+    public User(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public String getId() { return id; }
+    public String getName() { return name; }
+
+    public abstract void showInfo();
+}
+
+// Inheritance & Polimorfisme (Student extends User)
+class Student extends User {
+    private double score;
+
+    public Student(String id, String name, double score) {
+        super(id, name);
+        this.score = score;
+    }
+
+    public double getScore() { return score; }
+
+    @Override
+    public void showInfo() {
+        System.out.println("Student: " + getName() + " | Score: " + score);
+    }
+
+    @Override
+    public String toString() {
+        return getName() + " (" + getId() + ") - Score: " + score;
+    }
+}
+
+// Interface (GradeCalculator)
+interface GradeCalculator {
+    String calculateGrade(double score);
+}
+
+// Encapsulation + Collection + Polimorfisme
+class StudentService implements GradeCalculator {
+    private ArrayList<Student> students = new ArrayList<>();
+
+    public void addStudent(Student s) {
+        students.add(s);
+    }
+
+    public void printAllStudents() {
+        for (Student s : students) {
+            s.showInfo();
+            System.out.println("Grade: " + calculateGrade(s.getScore()));
+            System.out.println("----------");
+        }
+    }
+
+    @Override
+    public String calculateGrade(double score) {
+        if (score >= 85) return "A";
+        else if (score >= 70) return "B";
+        else if (score >= 60) return "C";
+        else return "D";
+    }
+}
+
+// Class Generic
+class Grade<T> {
+    private T value;
+
+    public void setGrade(T value) {
+        this.value = value;
+    }
+
+    public T getGrade() {
+        return value;
+    }
+}
+
+// MAIN CLASS (App Entry Point)
+public class MainApp {
+    public static void main(String[] args) {
+        Student s1 = new Student("S001", "Lina", 90.5);
+        Student s2 = new Student("S002", "Rico", 76.0);
+        Student s3 = new Student("S003", "Tania", 65.0);
+
+        StudentService service = new StudentService();
+        service.addStudent(s1);
+        service.addStudent(s2);
+        service.addStudent(s3);
+
+        service.printAllStudents();
+
+        // Generic Example
+        Grade<String> catatan = new Grade<>();
+        catatan.setGrade("Sangat Baik");
+        System.out.println("Catatan: " + catatan.getGrade());
+    }
+}
